@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kemp's Ridley Sea Turtle - Presentation</title>
+    <!-- Load Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the presentation */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .slide-container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+        .slide-content {
+            flex-grow: 1;
+        }
+        .slide-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 0.75rem; /* rounded-xl */
+        }
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        /* Custom list style for nested lists */
+        .list-circle {
+            list-style-type: circle;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div id="presentation-app" class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden">
+        
+        <!-- Header -->
+        <header class="bg-emerald-700 text-white p-4 sm:p-6">
+            <h1 class="text-2xl sm:text-3xl font-extrabold">Endangered Turtles: Kemp's Ridley Sea Turtle</h1>
+            <p class="text-sm sm:text-base opacity-90 mt-1" id="slide-title">Loading...</p>
+        </header>
+
+        <!-- Slide Container -->
+        <div id="slide-display" class="slide-container">
+            <!-- Content will be injected here by JavaScript -->
+        </div>
+
+        <!-- Navigation and Indicator -->
+        <footer class="p-4 sm:p-6 bg-gray-100 flex justify-between items-center border-t border-gray-200">
+            <button id="prev-btn" onclick="prevSlide()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg font-semibold hover:bg-gray-400 transition duration-150 flex items-center disabled:opacity-50" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                Previous
+            </button>
+            
+            <span id="slide-indicator" class="text-sm sm:text-base font-medium text-gray-600"></span>
+
+            <button id="next-btn" onclick="nextSlide()" class="px-4 py-2 bg-emerald-600 text-white rounded-lg font-semibold hover:bg-emerald-700 transition duration-150 flex items-center disabled:opacity-50">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+            </button>
+        </footer>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+
+        // --- Data for all Slides ---
+        const slides = [
+            // Slide 1: Introduction & Status
+            {
+                title: "Introduction & Critically Endangered Status",
+                // Updated image to show a clear view of the whole turtle
+                image: "https://placehold.co/800x450/1e40af/ffffff?text=Kemp's+Ridley+Adult+in+Water",
+                alt: "Image of an adult Kemp's Ridley Sea Turtle swimming in clear water, showing its overall shape.",
+                content: `
+                    <h2 class="text-3xl font-bold text-emerald-800 mb-4">The Most Endangered Sea Turtle</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-red-600">Status:</strong> **Critically Endangered** globally. This is the smallest sea turtle species in the world.</li>
+                        <li><strong class="text-emerald-600">Scientific Name:</strong> <em>Lepidochelys kempii</em>.</li>
+                        <li><strong class="text-emerald-600">Historic Decline:</strong> Their population dropped dramatically in the mid-1900s, making conservation efforts extremely important.</li>
+                        <li><strong class="text-emerald-600">Goal:</strong> Understanding their tracks and behavior is crucial for conservation and monitoring nesting sites.</li>
+                    </ul>
+                `
+            },
+            // Slide 2: Physical Traits & Diet
+            {
+                title: "Physical Description and Diet",
+                // Updated image to show the distinct shell (carapace)
+                image: "https://placehold.co/800x450/4ade80/000000?text=Kemp's+Ridley+Carapace+and+Head+Close-up",
+                alt: "Close-up image of the olive-grey, wide, and rounded carapace of a Kemp's Ridley turtle.",
+                content: `
+                    <h2 class="text-3xl font-bold text-emerald-800 mb-4">Small Size, Strong Jaws</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-emerald-600">Shell (Carapace):</strong> Wide, round, and olive-grey or green in color. Juveniles often have a darker shell which lightens as they mature.</li>
+                        <li><strong class="text-emerald-600">Size:</strong> Adults reach about 24-28 inches in carapace length and weigh around 77-100 lbs (35-45 kg).</li>
+                        <li><strong class="text-emerald-600">Diet:</strong> They are bottom-dwelling carnivores. Their favorite food is **crabs**! They use powerful jaws to crush the hard shells of crabs, mollusks, and clams found in shallow waters.</li>
+                    </ul>
+                `
+            },
+            // Slide 3: Habitat & Range
+            {
+                title: "Habitat, Range, and Migration",
+                image: "https://placehold.co/800x450/1e3a8a/ffffff?text=Alabama+Gulf+Coast+Shallow+Water+Habitat",
+                alt: "Image of the Alabama Gulf Coast shallow water and sandy beach.",
+                content: `
+                    <h2 class="text-3xl font-bold text-emerald-800 mb-4">Shallow Coastal Zones</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-emerald-600">Primary Range:</strong> The entire Gulf of Mexico is critical habitat, extending up the U.S. Atlantic coast to New England for feeding.</li>
+                        <li><strong class="text-emerald-600">Alabama Presence:</strong> Kemp's Ridleys are **common foragers** in Alabama’s Mobile Bay and Gulf Coast waters. They love the shallow, muddy, or sandy bottoms for hunting crabs.</li>
+                        <li><strong class="text-red-600">Nesting in Alabama:</strong> Nesting is **extremely rare** in Alabama, but documented. Every nest is protected by groups like 'Share the Beach'.</li>
+                        <li><strong class="text-emerald-600">Migration:</strong> Juveniles often ride warm currents north up the U.S. Atlantic coast before returning south to the Gulf as they grow older.</li>
+                    </ul>
+                `
+            },
+            // Slide 4: Locomotion & Track Identification
+            {
+                title: "Unique Locomotion and Track Identification",
+                // Updated image to clearly illustrate the symmetrical track
+                image: "https://placehold.co/800x350/fcd34d/92400e?text=Detailed+Photo+of+Kemp's+Ridley+Symmetrical+Track",
+                alt: "Detailed photo of a symmetrical sea turtle crawl track on the sand, showing parallel flipper imprints and a central body drag.",
+                content: `
+                    <h2 class="text-3xl font-bold text-emerald-800 mb-4">The Symmetrical Crawl Pattern</h2>
+                    <p class="text-lg text-gray-700 mb-4">Kemp's Ridleys are easy to identify by their tracks because they use a **simultaneous crawl** (or symmetrical crawl) when moving on land.</p>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-blue-700 mb-2">Key Track Features:</h3>
+                        <p class="text-gray-700">1. **Flipper Marks:** Flipper imprints occur in **pairs** on either side of the track, moving *together* (unlike the Loggerhead, which alternates).</p>
+                        <p class="text-gray-700 mt-1">2. **Body Drag:** Features a clear, straight, symmetrical drag line down the center from the turtle's body/shell (carapace).</p>
+                    </div>
+
+                    <!-- Simple SVG Diagram of the Track (Already detailed) -->
+                    <div class="mt-4 flex flex-col items-center">
+                        <p class="text-sm font-mono text-gray-500 mb-1">SIMULTANEOUS FLIPPER MARKS</p>
+                        <svg class="w-full max-w-sm h-20" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Flipper Pair 1 -->
+                            <rect x="5" y="10" width="15" height="10" fill="#10b981" rx="2"/>
+                            <rect x="80" y="10" width="15" height="10" fill="#10b981" rx="2"/>
+                            <!-- Flipper Pair 2 -->
+                            <rect x="5" y="60" width="15" height="10" fill="#10b981" rx="2"/>
+                            <rect x="80" y="60" width="15" height="10" fill="#10b981" rx="2"/>
+                            <!-- Central Drag Mark -->
+                            <line x1="50" y1="0" x2="50" y2="80" stroke="#ef4444" stroke-width="5"/>
+                            <text x="55" y="45" font-size="8" fill="#ef4444">BODY DRAG</text>
+                        </svg>
+                        <p class="text-sm font-mono text-gray-500 mt-1">SYMMETRICAL TRACK</p>
+                    </div>
+                `
+            },
+            // Slide 5: Reproduction: The Arribada
+            {
+                title: "Reproduction: The Arribada (Mass Arrival)",
+                image: "https://placehold.co/800x450/dc2626/ffffff?text=Kemp's+Ridley+Nesting+Arribada+Event",
+                alt: "Image showing a mass nesting event (Arribada) on a beach.",
+                content: `
+                    <h2 class="text-3xl font-bold text-emerald-800 mb-4">Synchronized Nesting</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-emerald-600">Arribada:</strong> This term means "arrival" and describes the unique behavior where hundreds or thousands of females nest together at the same time.</li>
+                        <li><strong class="text-emerald-600">Key Location:</strong> The primary nesting beach is Rancho Nuevo in Tamaulipas, Mexico. Only two species of sea turtles do this!</li>
+                        <li><strong class="text-emerald-600">Daytime Nesters:</strong> Kemp's Ridleys are one of the few species that regularly nest during the **day**, which makes them unique among sea turtles.</li>
+                        <li><strong class="text-emerald-600">Clutch Size:</strong> Females lay about 100 eggs per nest, and will typically nest 2-3 times during a single nesting season.</li>
+                    </ul>
+                `
+            },
+            // Slide 6: Major Threats
+            {
+                title: "Major Threats to Survival",
+                image: "https://placehold.co/800x450/475569/ffffff?text=Fishing+Net+and+Oil+Contamination+Threats",
+                alt: "Image showing a fishing net or a small patch of oil on a beach to represent threats.",
+                content: `
+                    <h2 class="text-3xl font-bold text-red-700 mb-4">Why Are They Endangered?</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-red-600">Bycatch:</strong> Getting accidentally caught in fishing nets (especially shrimping trawls) is the leading cause of death. They are often unable to escape and drown.</li>
+                        <li><strong class="text-red-600">Habitat Loss:</strong> Coastal development and erosion reduce the available nesting habitat along the coastlines.</li>
+                        <li><strong class="text-red-600">Oil Spills & Pollution:</strong> As Gulf residents, they are severely affected by chemical and plastic pollution, including major oil spills which contaminate their food and water.</li>
+                        <li><strong class="text-red-600">Climate Change:</strong> Warmer sand on nesting beaches can lead to an unbalanced sex ratio (mostly females).</li>
+                    </ul>
+                `
+            },
+            // Slide 7: Conservation & How You Can Help
+            {
+                title: "Conservation Efforts and How to Help",
+                image: "https://placehold.co/800x450/059669/ffffff?text=Sea+Turtle+Hatchlings+Making+Way+to+Ocean",
+                alt: "Image of sea turtle hatchlings making their way to the ocean.",
+                content: `
+                    <h2 class="text-3xl font-bold text-emerald-800 mb-4">Protecting the Next Generation</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-emerald-600">TEDs (Turtle Excluder Devices):</strong> Special escape hatches are now required in most fishing nets, allowing turtles to escape without damaging the catch.</li>
+                        <li><strong class="text-emerald-600">Nest Monitoring:</strong> Conservationists and volunteers monitor nesting beaches daily to protect eggs and tiny hatchlings from predators and human interference.</li>
+                        <li><strong class="text-emerald-600">How You Can Help:</strong>
+                            <ul class="list-circle list-inside ml-5 text-gray-700">
+                                <li>Reduce plastic use (turtles can mistake bags for jellyfish).</li>
+                                <li>Always fill in holes and knock down sandcastles on the beach before leaving.</li>
+                                <li>Turn off or shield bright lights visible from the beach during nesting season.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                `
+            }
+        ];
+
+        // --- JavaScript Functions for Presentation Logic ---
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            const display = document.getElementById('slide-display');
+            document.getElementById('slide-title').textContent = `Slide ${index + 1} of ${slides.length}: ${slide.title}`;
+
+            display.innerHTML = `
+                <div class="slide-content">
+                    <img src="${slide.image}" alt="${slide.alt}" class="slide-image mb-6 shadow-lg">
+                    <div class="p-2">
+                        ${slide.content}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('slide-indicator').textContent = `Slide ${index + 1} / ${slides.length}`;
+            updateNavigationButtons(index);
+        }
+
+        function updateNavigationButtons(index) {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        window.nextSlide = function() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        window.prevSlide = function() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        // Initialize the presentation
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSlide(currentSlideIndex);
+        });
+    </script>
+
+</body>
+</html>
