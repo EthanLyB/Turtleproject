@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Flattened Musk Turtle - Presentation</title>
+    <!-- Load Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the presentation */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .slide-container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+        .slide-content {
+            flex-grow: 1;
+        }
+        .slide-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 0.75rem; /* rounded-xl */
+        }
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        /* Custom list style for nested lists */
+        .list-circle {
+            list-style-type: circle;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div id="presentation-app" class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden">
+        
+        <!-- Header: Using a river/water-themed blue/teal -->
+        <header class="bg-teal-700 text-white p-4 sm:p-6">
+            <h1 class="text-2xl sm:text-3xl font-extrabold">The River Dweller: Flattened Musk Turtle</h1>
+            <p class="text-sm sm:text-base opacity-90 mt-1" id="slide-title">Loading...</p>
+        </header>
+
+        <!-- Slide Container -->
+        <div id="slide-display" class="slide-container">
+            <!-- Content will be injected here by JavaScript -->
+        </div>
+
+        <!-- Navigation and Indicator -->
+        <footer class="p-4 sm:p-6 bg-gray-100 flex justify-between items-center border-t border-gray-200">
+            <button id="prev-btn" onclick="prevSlide()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg font-semibold hover:bg-gray-400 transition duration-150 flex items-center disabled:opacity-50" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                Previous
+            </button>
+            
+            <span id="slide-indicator" class="text-sm sm:text-base font-medium text-gray-600"></span>
+
+            <button id="next-btn" onclick="nextSlide()" class="px-4 py-2 bg-teal-600 text-white rounded-lg font-semibold hover:bg-teal-700 transition duration-150 flex items-center disabled:opacity-50">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+            </button>
+        </footer>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+
+        // --- Data for all Slides ---
+        const slides = [
+            // Slide 1: Introduction & Status
+            {
+                title: "Introduction: Alabama's Endemic Aquatic Turtle",
+                // Image showing a small turtle in clear river water
+                image: "https://placehold.co/800x450/0f766e/ffffff?text=Flattened+Musk+Turtle+in+Clear+River+Water",
+                alt: "Image of a small, dark turtle swimming or resting on a rock in a clear, flowing river.",
+                content: `
+                    <h2 class="text-3xl font-bold text-teal-800 mb-4">A Unique Species of the Warrior River</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-red-600">Status:</strong> **Federally Threatened**. This designation means the species is likely to become endangered in the foreseeable future.</li>
+                        <li><strong class="text-teal-600">Scientific Name:</strong> <em>Sternotherus minor depressus</em>.</li>
+                        <li><strong class="text-teal-600">Endemic Range:</strong> This turtle lives only in the **Mobile Basin**, specifically the **Black Warrior River system** in Alabama.</li>
+                        <li><strong class="text-teal-600">Goal:</strong> Protecting the water quality of its river habitat is key to its survival.</li>
+                    </ul>
+                `
+            },
+            // Slide 2: Physical Traits & Diet
+            {
+                title: "Physical Description and Diet",
+                // Image showing the flattened shell and powerful jaws
+                image: "https://placehold.co/800x450/065f46/ffffff?text=Flattened+Musk+Turtle+Shell+Profile",
+                alt: "Close-up image of a Flattened Musk Turtle showing its distinctively low, flattened shell and small head.",
+                content: `
+                    <h2 class="text-3xl font-bold text-teal-800 mb-4">The Adaptation of a Flat Shell</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-teal-600">Shell (Carapace):</strong> Unlike most turtles, the shell is noticeably **flat and low** (depressed), which is a key adaptation for its river life.</li>
+                        <li><strong class="text-teal-600">Size:</strong> They are small, usually only reaching about 3 to 4.5 inches in length.</li>
+                        <li><strong class="text-teal-600">Special Features:</strong> Like other musk turtles, they have fleshy **barbels** on their chin and neck, and they can produce a musky odor when scared (hence the name).</li>
+                        <li><strong class="text-teal-600">Diet:</strong> They are bottom-feeding carnivores, using their strong jaws to crush small **snails, aquatic insects, and clams**.</li>
+                    </ul>
+                `
+            },
+            // Slide 3: Habitat Requirements
+            {
+                title: "Habitat: Rocky Shoals and Clear Water",
+                image: "https://placehold.co/800x450/1e40af/ffffff?text=Black+Warrior+River+Rocky+Shoals",
+                alt: "Image of a section of a clean, flowing river with exposed rocky shoals and riffles.",
+                content: `
+                    <h2 class="text-3xl font-bold text-teal-800 mb-4">Life in the Fast Lane</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-teal-600">Specific Needs:</strong> The turtle relies entirely on **high-quality, clean, flowing water**.</li>
+                        <li><strong class="text-teal-600">Shelter:</strong> They need **rocky shoals and riffle areas** (shallow, fast-moving water) with plenty of crevices under rocks and logs. They use their flat shells to wedge into these tight spaces for protection and resting.</li>
+                        <li><strong class="text-red-600">Vulnerability:</strong> They cannot survive in slow, muddy, or heavily polluted water because the sediment smothers their food sources and shelters.</li>
+                    </ul>
+                `
+            },
+            // Slide 4: Unique Identifier: Shell and Aquatic Observation
+            {
+                title: "Unique Identifier: Shell Shape and Aquatic Niche",
+                // Image emphasizing the flat shell in a crevice
+                image: "https://placehold.co/800x350/fcd34d/92400e?text=Turtle+Wedged+Under+Rock+in+Water",
+                alt: "Detailed image of a Flattened Musk Turtle using its flat shell to hide securely under a large river rock.",
+                content: `
+                    <h2 class="text-3xl font-bold text-teal-800 mb-4">Built to Fit Under Rocks</h2>
+                    <p class="text-lg text-gray-700 mb-4">Unlike sea turtles, their presence is identified not by tracks, but by their unique physical features and habitat requirements.</p>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-blue-700 mb-2">Key Identification Features:</h3>
+                        <p class="text-gray-700">1. **Flattened Carapace:** This is the most defining feature. If a turtle is this small and its shell is very flat, it is likely this species (or a closely related one in the same genus).</p>
+                        <p class="text-gray-700 mt-1">2. **Habitat Match:** Finding a small turtle in the high-flow, rocky, riffle areas of the Black Warrior River strongly suggests it is this species, as few other turtles thrive there.</p>
+                        <p class="text-gray-700 mt-1">3. **Aquatic Observation:** They are rarely seen out of the water, often only briefly coming to the surface for air or basking on logs.</p>
+                    </div>
+                `
+            },
+            // Slide 5: Reproduction and Nesting
+            {
+                title: "Reproduction: Small Clutches and Hidden Nests",
+                image: "https://placehold.co/800x450/4c1d95/ffffff?text=Small+Clutch+of+Turtle+Eggs+Under+Log",
+                alt: "Image showing a small number of turtle eggs hidden beneath a rotting log or rock on the riverbank.",
+                content: `
+                    <h2 class="text-3xl font-bold text-teal-800 mb-4">Reproduction Under Cover</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-teal-600">Mating:</strong> Mating takes place underwater, typically in the spring.</li>
+                        <li><strong class="text-teal-600">Clutch Size:</strong> Females lay very small clutches, usually only **1 to 5 eggs** per nesting event, and may lay multiple times in a season.</li>
+                        <li><strong class="text-teal-600">Nest Location:</strong> Nests are hidden and simple, often just shallow depressions under rocks, logs, or debris along the riverbank. This offers protection from predators.</li>
+                        <li><strong class="text-teal-600">Hatchlings:</strong> The tiny hatchlings look like miniature versions of the adults and immediately head for the river.</li>
+                    </ul>
+                `
+            },
+            // Slide 6: Major Threats
+            {
+                title: "Major Threats: Water Quality and Dams",
+                image: "https://placehold.co/800x450/b91c1c/ffffff?text=Polluted+River+Water+and+Sedimentation",
+                alt: "Image showing a river with heavy siltation (muddy water) and potential pollution near a bridge or development.",
+                content: `
+                    <h2 class="text-3xl font-bold text-red-700 mb-4">Dangers to a Sensitive Habitat</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-red-600">Habitat Fragmentation:</strong> Dams and impoundments turn fast-flowing rivers into slow, deep lakes, destroying the rocky shoal habitat the turtle needs.</li>
+                        <li><strong class="text-red-600">Sedimentation:</strong> Runoff from construction, agriculture, and forestry causes mud and silt to enter the river, smothering the rocky crevices and the snails/insects they eat.</li>
+                        <li><strong class="text-red-600">Water Pollution:</strong> Chemical and sewage pollution directly harm the turtles and destroy their fragile aquatic food chain.</li>
+                        <li><strong class="text-red-600">Limited Range:</strong> Because they only live in a small area, any major event (like a large industrial spill) could wipe out a significant portion of the population.</li>
+                    </ul>
+                `
+            },
+            // Slide 7: Conservation & How You Can Help
+            {
+                title: "Conservation Efforts and How to Help",
+                image: "https://placehold.co/800x450/059669/ffffff?text=Volunteer+Removing+Trash+from+Riverbank",
+                alt: "Image of volunteers cleaning up trash along a riverbank to protect the water quality.",
+                content: `
+                    <h2 class="text-3xl font-bold text-teal-800 mb-4">Protecting Our Waterways</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-teal-600">River Restoration:</strong> Efforts are underway to restore natural flow and habitat, including dam removal or mitigation to bring back rocky shoals.</li>
+                        <li><strong class="text-teal-600">Water Quality Monitoring:</strong> Environmental groups regularly test the river water to ensure pollution levels remain safe for aquatic life.</li>
+                        <li><strong class="text-teal-600">How You Can Help:</strong>
+                            <ul class="list-circle list-inside ml-5 text-gray-700">
+                                <li>Participate in local **river or stream cleanup** events.</li>
+                                <li>Educate others about the importance of reducing polluted runoff into storm drains.</li>
+                                <li>Support organizations that work to protect the Black Warrior River and other Alabama waterways.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                `
+            }
+        ];
+
+        // --- JavaScript Functions for Presentation Logic ---
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            const display = document.getElementById('slide-display');
+            document.getElementById('slide-title').textContent = `Slide ${index + 1} of ${slides.length}: ${slide.title}`;
+
+            display.innerHTML = `
+                <div class="slide-content">
+                    <img src="${slide.image}" alt="${slide.alt}" class="slide-image mb-6 shadow-lg">
+                    <div class="p-2">
+                        ${slide.content}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('slide-indicator').textContent = `Slide ${index + 1} / ${slides.length}`;
+            updateNavigationButtons(index);
+        }
+
+        function updateNavigationButtons(index) {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        window.nextSlide = function() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        window.prevSlide = function() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        // Initialize the presentation
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSlide(currentSlideIndex);
+        });
+    </script>
+
+</body>
+</html>
