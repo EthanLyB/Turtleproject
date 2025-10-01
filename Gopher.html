@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gopher Tortoise - Presentation</title>
+    <!-- Load Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the presentation */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .slide-container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+        .slide-content {
+            flex-grow: 1;
+        }
+        .slide-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 0.75rem; /* rounded-xl */
+        }
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        /* Custom list style for nested lists */
+        .list-circle {
+            list-style-type: circle;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div id="presentation-app" class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden">
+        
+        <!-- Header: Using an earthy amber/brown theme -->
+        <header class="bg-amber-800 text-white p-4 sm:p-6">
+            <h1 class="text-2xl sm:text-3xl font-extrabold">The Architects of the Ecosystem: Gopher Tortoise</h1>
+            <p class="text-sm sm:text-base opacity-90 mt-1" id="slide-title">Loading...</p>
+        </header>
+
+        <!-- Slide Container -->
+        <div id="slide-display" class="slide-container">
+            <!-- Content will be injected here by JavaScript -->
+        </div>
+
+        <!-- Navigation and Indicator -->
+        <footer class="p-4 sm:p-6 bg-gray-100 flex justify-between items-center border-t border-gray-200">
+            <button id="prev-btn" onclick="prevSlide()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg font-semibold hover:bg-gray-400 transition duration-150 flex items-center disabled:opacity-50" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                Previous
+            </button>
+            
+            <span id="slide-indicator" class="text-sm sm:text-base font-medium text-gray-600"></span>
+
+            <button id="next-btn" onclick="nextSlide()" class="px-4 py-2 bg-amber-600 text-white rounded-lg font-semibold hover:bg-amber-700 transition duration-150 flex items-center disabled:opacity-50">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+            </button>
+        </footer>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+
+        // --- Data for all Slides ---
+        const slides = [
+            // Slide 1: Introduction & Status
+            {
+                title: "Introduction: Florida's Keystone Species",
+                // Image showing a gopher tortoise in its habitat
+                image: "https://placehold.co/800x450/78350f/ffffff?text=Gopher+Tortoise+in+Sandy+Habitat",
+                alt: "Image of a Gopher Tortoise sitting in the sandy soil of a longleaf pine habitat.",
+                content: `
+                    <h2 class="text-3xl font-bold text-amber-800 mb-4">The Importance of a Digging Turtle</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-red-600">Status:</strong> Protected/Threatened across its range. It is illegal to harass, harm, or collect Gopher Tortoises.</li>
+                        <li><strong class="text-amber-600">Scientific Name:</strong> <em>Gopherus polyphemus</em>.</li>
+                        <li><strong class="text-amber-600">Keystone Species:</strong> Their burrows provide shelter for over 350 other animal species during harsh weather, fire, and cold.</li>
+                        <li><strong class="text-amber-600">Range:</strong> Found in the southeastern United States, including Alabama, Florida, Georgia, and parts of South Carolina and Mississippi.</li>
+                    </ul>
+                `
+            },
+            // Slide 2: Physical Traits & Diet
+            {
+                title: "Physical Description and Diet",
+                // Image showing the dome shell and shovel-like feet
+                image: "https://placehold.co/800x450/d97706/000000?text=Tortoise+Close-up+Showing+Carapace+and+Feet",
+                alt: "Close-up image of a Gopher Tortoise showing its high-domed, brownish shell and powerful, shovel-like front feet.",
+                content: `
+                    <h2 class="text-3xl font-bold text-amber-800 mb-4">Built for Digging</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-amber-600">Shell (Carapace):</strong> High-domed, brownish-gray to yellowish-brown, which helps it blend in with the sandy soil.</li>
+                        <li><strong class="text-amber-600">Unique Feature:</strong> They possess powerful, flattened, shovel-like front limbs and strong claws, specifically adapted for digging their extensive burrows.</li>
+                        <li><strong class="text-amber-600">Diet:</strong> Gopher tortoises are herbivores. They eat low-growing plants, grasses, wiregrass, herbs, legumes, and fruits.</li>
+                    </ul>
+                `
+            },
+            // Slide 3: Habitat Requirements
+            {
+                title: "Ideal Habitat: Sandy, Sunny, and Open",
+                image: "https://placehold.co/800x450/451a03/ffffff?text=Longleaf+Pine+Forest+with+Open+Understory",
+                alt: "Image of a longleaf pine forest ecosystem with a sparse, grassy understory, which is ideal habitat.",
+                content: `
+                    <h2 class="text-3xl font-bold text-amber-800 mb-4">The Need for Well-Drained Soil</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-amber-600">Habitat Type:</strong> They require areas with deep, well-drained, sandy soils, such as sandhills, scrub, and dry pine flatwoods.</li>
+                        <li><strong class="text-amber-600">Sunlight:</strong> The open, sunny areas are critical for the low-growing plants they eat and for helping to warm the soil (which is important for nest incubation).</li>
+                        <li><strong class="text-amber-600">Fire Adaptation:</strong> Their habitat is maintained by **natural fire** (controlled burns). Fire prevents trees from overgrowing, keeping the low-growing food plants available.</li>
+                    </ul>
+                `
+            },
+            // Slide 4: Unique Identifier: The Burrow
+            {
+                title: "Unique Identifier: The Gopher Tortoise Burrow",
+                // Image showing a classic half-moon entrance and sand apron
+                image: "https://placehold.co/800x350/f59e0b/44403c?text=Gopher+Tortoise+Burrow+Entrance+with+Apron",
+                alt: "Detailed photo of a Gopher Tortoise burrow entrance, clearly showing the half-moon shape and the fan of sand (apron) outside.",
+                content: `
+                    <h2 class="text-3xl font-bold text-amber-800 mb-4">A Deep Home for Hundreds of Guests</h2>
+                    <p class="text-lg text-gray-700 mb-4">The burrow is the defining sign of a tortoise's presence. It serves as a refuge from heat, cold, and fire for them and many other species.</p>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-blue-700 mb-2">Key Burrow Features:</h3>
+                        <p class="text-gray-700">1. **Entrance Shape:** The opening is a distinct **half-moon** shape, matching the curve of the tortoise's shell.</p>
+                        <p class="text-gray-700 mt-1">2. **Apron:** A fan-shaped mound of white or light-colored sand (called the **apron**) is always visible outside the entrance, formed by the tortoise kicking out sand while digging.</p>
+                        <p class="text-gray-700 mt-1">3. **Size:** Burrows are typically 15 to 48 feet long and up to 10 feet deep, maintaining a constant temperature year-round.</p>
+                    </div>
+                `
+            },
+            // Slide 5: Reproduction and Nesting
+            {
+                title: "Reproduction: Solitary and Shallow Nests",
+                image: "https://placehold.co/800x450/4c1d95/ffffff?text=Gopher+Tortoise+Hatchling+near+Burrow",
+                alt: "Image showing a tiny Gopher Tortoise hatchling emerging near the sandy mouth of a burrow.",
+                content: `
+                    <h2 class="text-3xl font-bold text-amber-800 mb-4">Laying Eggs Near Home</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-amber-600">Nesting:</strong> Females typically lay a single clutch of 3 to 15 eggs per year, usually in late spring or early summer.</li>
+                        <li><strong class="text-amber-600">Nest Location:</strong> The nest is often a shallow depression or hole dug in the sand **near the mouth of the burrow**, or sometimes in the side of the burrow apron.</li>
+                        <li><strong class="text-red-600">Hatchling Survival:</strong> Hatchlings are very vulnerable. They face high rates of predation from raccoons, snakes, and other animals.</li>
+                        <li><strong class="text-amber-600">Maturity:</strong> It takes Gopher Tortoises 10 to 15 years to reach maturity.</li>
+                    </ul>
+                `
+            },
+            // Slide 6: Major Threats
+            {
+                title: "Major Threats to Survival",
+                image: "https://placehold.co/800x450/b91c1c/ffffff?text=Road+Crossing+and+Urban+Development+Threats",
+                alt: "Image showing a tortoise needing to cross a road near a new housing development.",
+                content: `
+                    <h2 class="text-3xl font-bold text-red-700 mb-4">The Dangers of Habitat Loss</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-red-600">Habitat Loss & Fragmentation:</strong> This is the biggest threat. Developing lands with sandy soil destroys their habitat and cuts off populations.</li>
+                        <li><strong class="text-red-600">Vehicle Strikes:</strong> Tortoises moving between habitats or nesting often cross roads and are hit by cars.</li>
+                        <li><strong class="text-red-600">Disease:</strong> The upper respiratory tract disease (URTD) has been a significant factor in some population declines.</li>
+                        <li><strong class="text-red-600">Invasive Species:</strong> Invasive plants can change the structure of the tortoise's habitat, making it unsuitable for feeding and burrowing.</li>
+                    </ul>
+                `
+            },
+            // Slide 7: Conservation & How You Can Help
+            {
+                title: "Conservation Efforts and How to Help",
+                image: "https://placehold.co/800x450/059669/ffffff?text=Safe+Relocation+of+Gopher+Tortoise",
+                alt: "Image of a professional wildlife worker safely relocating a Gopher Tortoise to a protected area.",
+                content: `
+                    <h2 class="text-3xl font-bold text-amber-800 mb-4">Protecting the Keystone</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-amber-600">Legal Protection:</strong> Gopher Tortoises are protected by law. It is illegal to touch, harass, or harm them.</li>
+                        <li><strong class="text-amber-600">Habitat Management:</strong> Land managers use controlled burning to maintain the open, grassy habitat that tortoises need.</li>
+                        <li><strong class="text-amber-600">Relocation Programs:</strong> When development is necessary, special permits are required, and tortoises must be moved safely to designated recipient sites.</li>
+                        <li><strong class="text-amber-600">How You Can Help:</strong>
+                            <ul class="list-circle list-inside ml-5 text-gray-700">
+                                <li>Never pick up a tortoise unless it's in immediate danger (like crossing a road).</li>
+                                <li>Report sick or injured tortoises to your state wildlife agency.</li>
+                                <li>Drive slowly in known tortoise areas.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                `
+            }
+        ];
+
+        // --- JavaScript Functions for Presentation Logic ---
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            const display = document.getElementById('slide-display');
+            document.getElementById('slide-title').textContent = `Slide ${index + 1} of ${slides.length}: ${slide.title}`;
+
+            display.innerHTML = `
+                <div class="slide-content">
+                    <img src="${slide.image}" alt="${slide.alt}" class="slide-image mb-6 shadow-lg">
+                    <div class="p-2">
+                        ${slide.content}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('slide-indicator').textContent = `Slide ${index + 1} / ${slides.length}`;
+            updateNavigationButtons(index);
+        }
+
+        function updateNavigationButtons(index) {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        window.nextSlide = function() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        window.prevSlide = function() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        // Initialize the presentation
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSlide(currentSlideIndex);
+        });
+    </script>
+
+</body>
+</html>
