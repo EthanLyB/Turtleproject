@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loggerhead Sea Turtle - Presentation</title>
+    <!-- Load Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        /* Custom styles for the presentation */
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f3f4f6;
+        }
+        .slide-container {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 2rem;
+        }
+        .slide-content {
+            flex-grow: 1;
+        }
+        .slide-image {
+            width: 100%;
+            max-height: 400px;
+            object-fit: cover;
+            border-radius: 0.75rem; /* rounded-xl */
+        }
+        .text-shadow {
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        /* Custom list style for nested lists */
+        .list-circle {
+            list-style-type: circle;
+        }
+    </style>
+</head>
+<body class="p-4 sm:p-8">
+
+    <div id="presentation-app" class="max-w-4xl mx-auto bg-white shadow-2xl rounded-xl overflow-hidden">
+        
+        <!-- Header -->
+        <header class="bg-indigo-700 text-white p-4 sm:p-6">
+            <h1 class="text-2xl sm:text-3xl font-extrabold">Coastal Giants: The Loggerhead Sea Turtle</h1>
+            <p class="text-sm sm:text-base opacity-90 mt-1" id="slide-title">Loading...</p>
+        </header>
+
+        <!-- Slide Container -->
+        <div id="slide-display" class="slide-container">
+            <!-- Content will be injected here by JavaScript -->
+        </div>
+
+        <!-- Navigation and Indicator -->
+        <footer class="p-4 sm:p-6 bg-gray-100 flex justify-between items-center border-t border-gray-200">
+            <button id="prev-btn" onclick="prevSlide()" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-lg font-semibold hover:bg-gray-400 transition duration-150 flex items-center disabled:opacity-50" disabled>
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd" /></svg>
+                Previous
+            </button>
+            
+            <span id="slide-indicator" class="text-sm sm:text-base font-medium text-gray-600"></span>
+
+            <button id="next-btn" onclick="nextSlide()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg font-semibold hover:bg-indigo-700 transition duration-150 flex items-center disabled:opacity-50">
+                Next
+                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd" /></svg>
+            </button>
+        </footer>
+    </div>
+
+    <script>
+        let currentSlideIndex = 0;
+
+        // --- Data for all Slides ---
+        const slides = [
+            // Slide 1: Introduction & Status
+            {
+                title: "Introduction & Endangered Status",
+                // Image showing a Loggerhead's overall shape and large head
+                image: "https://placehold.co/800x450/4f46e5/ffffff?text=Loggerhead+Sea+Turtle+Swimming+in+Ocean",
+                alt: "Image of a large Loggerhead Sea Turtle swimming, showing its massive head.",
+                content: `
+                    <h2 class="text-3xl font-bold text-indigo-800 mb-4">A Global Traveler with a Giant Head</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-red-600">Status:</strong> **Endangered** or **Threatened** globally, with specific populations having critical status.</li>
+                        <li><strong class="text-indigo-600">Scientific Name:</strong> <em>Caretta caretta</em>.</li>
+                        <li><strong class="text-indigo-600">Name Origin:</strong> Their name comes from their very large head, which is necessary for crushing the hard shells of their prey.</li>
+                        <li><strong class="text-indigo-600">Goal:</strong> Protecting their nesting beaches is vital for the recovery of this important species.</li>
+                    </ul>
+                `
+            },
+            // Slide 2: Physical Traits & Diet
+            {
+                title: "Physical Description and Diet",
+                // Image showing the large head and reddish shell
+                image: "https://placehold.co/800x450/f97316/000000?text=Loggerhead+Carapace+and+Powerful+Jaws+Close-up",
+                alt: "Close-up image of the reddish-brown carapace and powerful head of a Loggerhead turtle.",
+                content: `
+                    <h2 class="text-3xl font-bold text-indigo-800 mb-4">Large Size, Heavy-Shelled Diet</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-indigo-600">Shell (Carapace):</strong> Reddish-brown, wide, and slightly heart-shaped. They often have algae growing on their shell.</li>
+                        <li><strong class="text-indigo-600">Size:</strong> Adults can reach lengths of up to **3.5 feet** (1.1 m) and weigh over **250 lbs** (113 kg), making them much larger than Kemp's Ridleys.</li>
+                        <li><strong class="text-indigo-600">Diet:</strong> They are powerful carnivores. Their favorite foods are heavy-shelled prey like **whelks, conchs, clams, and horseshoe crabs**.</li>
+                    </ul>
+                `
+            },
+            // Slide 3: Habitat & Range
+            {
+                title: "Habitat, Range, and Migration",
+                image: "https://placehold.co/800x450/1e3a8a/ffffff?text=Florida+Nesting+Beach+Habitat",
+                alt: "Image of a wide, sandy Florida beach, a major Loggerhead nesting area.",
+                content: `
+                    <h2 class="text-3xl font-bold text-indigo-800 mb-4">Widespread Coastal Nesting</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-indigo-600">Primary Range:</strong> Found worldwide. In the US, the major nesting areas are the southeastern beaches of Florida, Georgia, and the Carolinas.</li>
+                        <li><strong class="text-indigo-600">Alabama Presence:</strong> Loggerheads are the **most frequent nester** on Alabama's beaches, though total numbers are small compared to Florida. Every nest is strictly monitored.</li>
+                        <li><strong class="text-indigo-600">Coastal Habitat:</strong> They prefer coastal waters for feeding, often traveling far to offshore feeding grounds and back to nesting beaches.</li>
+                    </ul>
+                `
+            },
+            // Slide 4: Locomotion & Track Identification
+            {
+                title: "Unique Locomotion and Track Identification",
+                // Updated image to clearly illustrate the asymmetrical track
+                image: "https://placehold.co/800x350/f59e0b/44403c?text=Detailed+Photo+of+Loggerhead+Alternating+Track",
+                alt: "Detailed photo of an asymmetrical sea turtle crawl track on the sand, showing alternating flipper imprints.",
+                content: `
+                    <h2 class="text-3xl font-bold text-indigo-800 mb-4">The Asymmetrical Crawl Pattern</h2>
+                    <p class="text-lg text-gray-700 mb-4">Loggerheads are identified by their **alternating crawl** (or asymmetrical crawl) when moving on land—they move one flipper at a time.</p>
+                    
+                    <div class="bg-blue-50 border-l-4 border-blue-400 p-4 rounded-lg">
+                        <h3 class="text-xl font-semibold text-blue-700 mb-2">Key Track Features:</h3>
+                        <p class="text-gray-700">1. **Flipper Marks:** Flipper imprints occur in an **alternating pattern** (left, right, left, right). You won't see parallel pairs.</p>
+                        <p class="text-gray-700 mt-1">2. **Body Drag:** Features a wavy, zig-zag, or less distinct drag line down the center. This is because their shell slightly shifts as the flippers alternate movement.</p>
+                    </div>
+
+                    <!-- SVG Diagram of the Alternating Track -->
+                    <div class="mt-4 flex flex-col items-center">
+                        <p class="text-sm font-mono text-gray-500 mb-1">ALTERNATING FLIPPER MARKS</p>
+                        <svg class="w-full max-w-sm h-20" viewBox="0 0 100 80" xmlns="http://www.w3.org/2000/svg">
+                            <!-- Flipper Left 1 -->
+                            <rect x="5" y="10" width="15" height="10" fill="#10b981" rx="2"/>
+                            <!-- Flipper Right 1 -->
+                            <rect x="80" y="30" width="15" height="10" fill="#10b981" rx="2"/>
+                            <!-- Flipper Left 2 -->
+                            <rect x="5" y="50" width="15" height="10" fill="#10b981" rx="2"/>
+                            <!-- Flipper Right 2 -->
+                            <rect x="80" y="70" width="15" height="10" fill="#10b981" rx="2"/>
+                            <!-- Central Drag Mark (Wavy) -->
+                            <path d="M 50 0 Q 60 20, 50 40 T 50 80" stroke="#ef4444" stroke-width="3" fill="none"/>
+                            <text x="55" y="45" font-size="8" fill="#ef4444">BODY DRAG (WAVY)</text>
+                        </svg>
+                        <p class="text-sm font-mono text-gray-500 mt-1">ASYMMETRICAL TRACK</p>
+                    </div>
+                `
+            },
+            // Slide 5: Reproduction: Solitary Nesting
+            {
+                title: "Reproduction: Solitary Night Nesters",
+                image: "https://placehold.co/800x450/4c1d95/ffffff?text=Loggerhead+Female+Nesting+at+Night",
+                alt: "Image showing a solitary Loggerhead female digging a nest on a moonlit beach.",
+                content: `
+                    <h2 class="text-3xl font-bold text-indigo-800 mb-4">Single Mother on the Shore</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-indigo-600">Nesting Behavior:</strong> Unlike Kemp's Ridleys, Loggerheads nest **solitarily** (alone) and almost always at **night**.</li>
+                        <li><strong class="text-indigo-600">Peak Season:</strong> Nesting runs from late spring through summer, with Florida beaches hosting the largest number of nests in the Western Hemisphere.</li>
+                        <li><strong class="text-indigo-600">Clutch Size:</strong> Females lay around 100 to 126 eggs per nest and may nest 4 to 5 times in one nesting season, typically every 2-4 years.</li>
+                        <li><strong class="text-indigo-600">Nesting Site Fidelity:</strong> Females often return to the exact beach where they were born to lay their own eggs.</li>
+                    </ul>
+                `
+            },
+            // Slide 6: Major Threats
+            {
+                title: "Major Threats to Survival",
+                image: "https://placehold.co/800x450/b91c1c/ffffff?text=Beach+Development+and+Vessel+Strike+Danger",
+                alt: "Image showing beach development, bright lights, and boats, representing threats.",
+                content: `
+                    <h2 class="text-3xl font-bold text-red-700 mb-4">Human Activity Risks</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-red-600">Bycatch:</strong> Getting accidentally caught and drowning in commercial fishing gear remains a huge problem.</li>
+                        <li><strong class="text-red-600">Vessel Strikes:</strong> Because they spend a lot of time near the surface in coastal waters, they are often injured or killed by boat propellers.</li>
+                        <li><strong class="text-red-600">Light Pollution:</strong> Artificial lights near nesting beaches confuse hatchlings, leading them away from the ocean and toward danger.</li>
+                        <li><strong class="text-red-600">Habitat Degradation:</strong> Coastal erosion, human development, and pollution directly affect their nesting and foraging areas.</li>
+                    </ul>
+                `
+            },
+            // Slide 7: Conservation & How You Can Help
+            {
+                title: "Conservation Efforts and How to Help",
+                image: "https://placehold.co/800x450/059669/ffffff?text=Loggerhead+Hatchlings+Making+Way+to+Ocean",
+                alt: "Image of Loggerhead hatchlings scurrying toward the sea.",
+                content: `
+                    <h2 class="text-3xl font-bold text-indigo-800 mb-4">Protecting Our Coasts for Turtles</h2>
+                    <ul class="list-disc list-inside space-y-3 text-lg text-gray-700">
+                        <li><strong class="text-indigo-600">Beach Monitoring:</strong> Volunteer groups, like 'Share the Beach' in Alabama, patrol beaches nightly during the summer to protect and mark nests.</li>
+                        <li><strong class="text-indigo-600">Fishing Regulations:</strong> Regulations require special equipment, like Turtle Excluder Devices (TEDs), to allow turtles to escape nets.</li>
+                        <li><strong class="text-indigo-600">How You Can Help:</strong>
+                            <ul class="list-circle list-inside ml-5 text-gray-700">
+                                <li>Never approach or disturb a nesting turtle or hatchlings.</li>
+                                <li>Use turtle-friendly lighting (low, long-wavelength lights) if living near a beach.</li>
+                                <li>Clean up trash on beaches, especially plastic, which is dangerous for them to eat.</li>
+                            </ul>
+                        </li>
+                    </ul>
+                `
+            }
+        ];
+
+        // --- JavaScript Functions for Presentation Logic ---
+
+        function renderSlide(index) {
+            const slide = slides[index];
+            const display = document.getElementById('slide-display');
+            document.getElementById('slide-title').textContent = `Slide ${index + 1} of ${slides.length}: ${slide.title}`;
+
+            display.innerHTML = `
+                <div class="slide-content">
+                    <img src="${slide.image}" alt="${slide.alt}" class="slide-image mb-6 shadow-lg">
+                    <div class="p-2">
+                        ${slide.content}
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('slide-indicator').textContent = `Slide ${index + 1} / ${slides.length}`;
+            updateNavigationButtons(index);
+        }
+
+        function updateNavigationButtons(index) {
+            const prevBtn = document.getElementById('prev-btn');
+            const nextBtn = document.getElementById('next-btn');
+            
+            prevBtn.disabled = index === 0;
+            nextBtn.disabled = index === slides.length - 1;
+        }
+
+        window.nextSlide = function() {
+            if (currentSlideIndex < slides.length - 1) {
+                currentSlideIndex++;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        window.prevSlide = function() {
+            if (currentSlideIndex > 0) {
+                currentSlideIndex--;
+                renderSlide(currentSlideIndex);
+            }
+        }
+
+        // Initialize the presentation
+        document.addEventListener('DOMContentLoaded', () => {
+            renderSlide(currentSlideIndex);
+        });
+    </script>
+
+</body>
+</html>
